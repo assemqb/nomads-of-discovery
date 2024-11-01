@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Opportunities</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="theme-toggle" class="theme-toggle">Switch to Night Mode</button>
+
+  <header>
+    <h1>Search Opportunities</h1>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Search</a></li>
+      <li><a href="account.html">User Account</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Search and Filter Section -->
+    <section>
+      <h2>Find Your Next Opportunity</h2>
+      <div class="filters">
+        <input type="search" id="search" placeholder="Search opportunities..." class="search-input">
+        <select id="category">
+          <option value="">All Categories</option>
+          <option value="volunteer">Volunteer</option>
+          <option value="scholarship">Scholarship</option>
+          <option value="grant">Grant</option>
+        </select>
+        <button id="search-button" class="search-btn">Search</button>
+      </div>
+      <ul id="results-list" class="results-list animate-on-scroll"></ul>
+    </section>
+
+    <section id="login-section">
+      <h2>Login</h2>
+      <input type="text" id="login-username" placeholder="Username">
+      <button id="login-btn">Login</button>
+      <button id="logout-btn" style="display:none;">Logout</button>
+  </section>
+  
+
+    <!-- Modal for Opportunity Details -->
+    <div class="modal" id="opportunity-modal">
+      <div class="modal-content">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <h3 id="modal-title">Opportunity Title</h3>
+        <p id="modal-description">Detailed information about the opportunity will appear here.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Nomads of Discovery</p>
+  </footer>
+
+  <!-- JavaScript File -->
+  <script src="main.js"></script>
+</body>
+</html>

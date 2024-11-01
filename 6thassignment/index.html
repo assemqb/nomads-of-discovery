@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nomads of Discovery</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Theme Toggle Button -->
+  <button id="theme-toggle" class="theme-toggle">Switch to Night Mode</button>
+
+  <header>
+    <h1>Nomads of Discovery</h1>
+    <p>Your portal to global travel, scholarships, and volunteer opportunities.</p>
+    <h4 id="date-time"></h4>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="search.html">Search</a></li>
+      <li><a href="account.html">User Account</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Greeting Form -->
+    <section id="greeting-section">
+      <input type="text" id="greeting-input" placeholder="Enter your name">
+      <button id="set-greeting" class="greeting-btn">Set Greeting</button>
+    </section>
+
+    <!-- Background Color Change Button -->
+    <button id="color-btn" class="color-btn">Change Background Color</button>
+    
+    <!-- Interactive Map -->
+    <section class="map">
+      <div class="container">
+        <h2>Explore the World with Us</h2>
+        <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="450" class="border border-dark rounded" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <!-- Featured Opportunities Section -->
+<section>
+  <h2>Featured Opportunities</h2>
+  <div class="opportunity-card animate-on-scroll">
+    <img src="via.jpg" alt="Volunteer in Africa">
+    <div>
+      <h3>Volunteer Program in Africa</h3>
+      <p>Make a difference in communities across Africa through volunteering.</p>
+      <a href="https://www.volunteerhq.org/regions/africa/">Learn more</a>
+      <div class="star-rating" data-id="1">
+        <span class="star" data-value="1"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="2"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="3"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="4"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="5"><i class="fas fa-star"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="opportunity-card animate-on-scroll">
+    <img src="europe.jpg" alt="Scholarship in Europe">
+    <div>
+      <h3>Scholarship for Studying in Europe</h3>
+      <p>Get a full scholarship for a semester in Europe to enhance your education.</p>
+      <a href="https://education.ec.europa.eu/study-in-europe">Learn more</a>
+      <div class="star-rating" data-id="2">
+        <span class="star" data-value="1"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="2"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="3"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="4"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="5"><i class="fas fa-star"></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="opportunity-card animate-on-scroll">
+    <img src="asia.jpg" alt="Travel Grants for Asia">
+    <div>
+      <h3>Travel Grants for Asia</h3>
+      <p>Explore Asia with travel grants available for cultural exchange.</p>
+      <a href="https://foss4g.asia/2023/travel-grant-program/">Learn more</a>
+      <div class="star-rating" data-id="3">
+        <span class="star" data-value="1"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="2"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="3"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="4"><i class="fas fa-star"></i></span>
+        <span class="star" data-value="5"><i class="fas fa-star"></i></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="login-section">
+  <h2>Login</h2>
+  <input type="text" id="login-username" placeholder="Username">
+  <button id="login-btn">Login</button>
+  <button id="logout-btn" style="display:none;">Logout</button>
+</section>
+
+    <!-- Random Quote Section -->
+    <section>
+      <h2>Quote of the Day</h2>
+      <button id="new-quote-btn" class="quote-btn">Get New Quote</button>
+      <p id="quote-display" class="quote-display">Click the button above to receive a daily dose of inspiration!</p>
+    </section>
+
+
+    <!-- Subscribe Button and Modal Form -->
+    <button id="subscribe-btn" class="subscribe-btn">Subscribe</button>
+    <div id="popup-form" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Subscribe to our Newsletter</h3>
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Nomads of Discovery</p>
+    <p>Created by: Anarkulova Assem</p>
+  </footer>
+
+  <!-- JavaScript File -->
+  <script src="main.js"></script>
+</body>
+</html>
