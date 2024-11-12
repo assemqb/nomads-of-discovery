@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search Opportunities</title>
+  <title>Search Opportunities - Nomads of Discovery</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Theme Toggle Button -->
@@ -12,6 +14,7 @@
 
   <header>
     <h1>Search Opportunities</h1>
+    <p>Find the best opportunities tailored to you.</p>
   </header>
   
   <nav>
@@ -24,7 +27,7 @@
 
   <main>
     <!-- Search and Filter Section -->
-    <section>
+    <section id="search-filter-section">
       <h2>Find Your Next Opportunity</h2>
       <div class="filters">
         <input type="search" id="search" placeholder="Search opportunities..." class="search-input">
@@ -39,22 +42,55 @@
       <ul id="results-list" class="results-list animate-on-scroll"></ul>
     </section>
 
-    <section id="login-section">
-      <h2>Login</h2>
-      <input type="text" id="login-username" placeholder="Username">
-      <button id="login-btn">Login</button>
-      <button id="logout-btn" style="display:none;">Logout</button>
-  </section>
-  
-
-    <!-- Modal for Opportunity Details -->
-    <div class="modal" id="opportunity-modal">
-      <div class="modal-content">
-        <span class="modal-close" id="modal-close">&times;</span>
-        <h3 id="modal-title">Opportunity Title</h3>
-        <p id="modal-description">Detailed information about the opportunity will appear here.</p>
+    <!-- Featured Opportunities for Easy Access -->
+    <section id="featured-opportunities">
+      <h2>Highlighted Opportunities</h2>
+      <div class="opportunity-card">
+        <img src="via.jpg" alt="Volunteer in Africa">
+        <div>
+          <h3>Volunteer Program in Africa</h3>
+          <p>Impact communities through meaningful volunteer work.</p>
+          <a href="https://www.volunteerhq.org/regions/africa/">Learn more</a>
+          <div class="star-rating">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+          </div>
+        </div>
       </div>
-    </div>
+      <div class="opportunity-card">
+        <img src="europe.jpg" alt="Scholarship in Europe">
+        <div>
+          <h3>Scholarship for Studying in Europe</h3>
+          <p>Enhance your education with a full scholarship in Europe.</p>
+          <a href="https://education.ec.europa.eu/study-in-europe">Learn more</a>
+          <div class="star-rating">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+          </div>
+        </div>
+      </div>
+      <div class="opportunity-card">
+        <img src="asia.jpg" alt="Travel Grants for Asia">
+        <div>
+          <h3>Travel Grants for Asia</h3>
+          <p>Explore Asia through cultural exchange travel grants.</p>
+          <a href="https://foss4g.asia/2023/travel-grant-program/">Learn more</a>
+          <div class="star-rating">
+            <span class="star" data-value="1">&#9733;</span>
+            <span classa="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -63,5 +99,58 @@
 
   <!-- JavaScript File -->
   <script src="main.js"></script>
+  <script>
+    // Search Functionality
+    const opportunities = [
+      { id: 1, title: 'Volunteer Program in Africa', category: 'volunteer', description: 'Impact communities through meaningful volunteer work.' },
+      { id: 2, title: 'Scholarship in Europe', category: 'scholarship', description: 'Enhance your education with a full scholarship in Europe.' },
+      { id: 3, title: 'Travel Grants for Asia', category: 'grant', description: 'Explore Asia through cultural exchange travel grants.' }
+    ];
+
+    // Function to update and display search results
+    function displayResults(filteredOpportunities) {
+      const resultsList = document.getElementById('results-list');
+      resultsList.innerHTML = filteredOpportunities.map(opportunity => `
+        <li class="opportunity-item" data-id="${opportunity.id}">
+          ${opportunity.title}
+        </li>
+      `).join('');
+
+      document.querySelectorAll('.opportunity-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const id = Number(item.getAttribute('data-id'));
+          const opportunity = opportunities.find(op => op.id === id);
+          if (opportunity) {
+            alert(`Title: ${opportunity.title}\nDescription: ${opportunity.description}`);
+          }
+        });
+      });
+    }
+
+    // Search Button Click Event
+    document.getElementById('search-button').addEventListener('click', () => {
+      const query = document.getElementById('search').value.toLowerCase();
+      const category = document.getElementById('category').value;
+      
+      // Filter the opportunities based on search input and category selection
+      let filteredOpportunities = opportunities.filter(opportunity => {
+        return (!category || opportunity.category === category) &&
+               (!query || opportunity.title.toLowerCase().includes(query));
+      });
+
+      // Save filtered opportunities in localStorage
+      localStorage.setItem('searchResults', JSON.stringify(filteredOpportunities));
+
+      displayResults(filteredOpportunities);
+    });
+
+    // On Page Load: Display previous search results from localStorage
+    window.addEventListener('load', () => {
+      const storedResults = JSON.parse(localStorage.getItem('searchResults'));
+      if (storedResults) {
+        displayResults(storedResults);
+      }
+    });
+  </script>
 </body>
 </html>
