@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Account - Nomads of Discovery</title>
   <link rel="stylesheet" href="style.css">
-  <title>User Account</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Theme Toggle Button -->
@@ -23,9 +25,26 @@
   </nav>
 
   <main>
-    <!-- Account Information Form -->
-    <section>
-      <h2>Account Details</h2>
+    <!-- Sign-Up Section -->
+    <section id="sign-up">
+      <h2>Create Your Account</h2>
+      <form id="sign-up-form">
+        <label for="sign-up-username">Username:</label>
+        <input id="sign-up-username" type="text" name="username" placeholder="Enter your username" required>
+        
+        <label for="sign-up-email">Email:</label>
+        <input id="sign-up-email" type="email" name="email" placeholder="Enter your email" required>
+
+        <label for="sign-up-password">Password:</label>
+        <input id="sign-up-password" type="password" name="password" placeholder="Enter your password" required>
+
+        <button type="submit" id="sign-up-button">Sign Up</button>
+      </form>
+    </section>
+
+    <!-- Profile Information Section -->
+    <section id="user-profile" style="display:none;">
+      <h2>Profile Information</h2>
       <form id="account-form">
         <label for="username">Username:</label>
         <input id="username" type="text" name="username" placeholder="Enter your username" required>
@@ -38,9 +57,9 @@
       </form>
     </section>
 
-    <!-- Multi-Step Setup Form -->
-    <section id="multi-step-form">
-      <h2>Multi-Step Profile Setup</h2>
+    <!-- Multi-Step Profile Setup Form -->
+    <section id="multi-step-form" style="display:none;">
+      <h2>Profile Setup</h2>
       <div id="step-1" class="step">
         <label>Step 1: Upload Profile Picture</label>
         <input type="file" id="profile-pic">
@@ -58,11 +77,12 @@
       </div>
     </section>
 
-    <!-- Greeting Section -->
-    <section id="greeting-section">
-      <input type="text" id="greeting-input" placeholder="Enter your name" class="greeting-input">
-      <button id="set-greeting" class="greeting-btn">Set Greeting</button>
-      <p id="personal-greeting" class="personal-greeting"></p>
+    <!-- ChatGPT Interaction Section -->
+    <section id="chatgpt-interaction">
+      <h2>Chat with ChatGPT</h2>
+      <input type="text" id="chatgpt-prompt" placeholder="Enter your question...">
+      <button id="chatgpt-submit">Submit</button>
+      <p id="chatgpt-response"></p>
     </section>
   </main>
 
@@ -72,5 +92,92 @@
 
   <!-- JavaScript File -->
   <script src="main.js"></script>
+  <script>
+    // Handle Sign-Up Form Submission
+    document.getElementById('sign-up-form')?.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('sign-up-username').value.trim();
+      const email = document.getElementById('sign-up-email').value.trim();
+      const password = document.getElementById('sign-up-password').value.trim();
+      
+      // Basic validation
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+      if (!emailPattern.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+      }
+
+      if (!passwordPattern.test(password)) {
+          alert('Password must be at least 6 characters long and include at least one number.');
+          return;
+      }
+
+      // Save to localStorage
+      localStorage.setItem('user', JSON.stringify({ username, email, password }));
+      alert('Sign-up successful! You can now log in.');
+      showProfileForm();
+    });
+
+    // Handle Profile Update Form Submission
+    document.getElementById('account-form')?.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      
+      // Save updated profile information in localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.username = username;
+      user.email = email;
+
+      localStorage.setItem('user', JSON.stringify(user));
+      alert('Profile updated successfully!');
+    });
+
+    // Handle Reset Form Button
+    document.getElementById('reset-button')?.addEventListener('click', () => {
+      document.getElementById('account-form').reset();
+      alert('Form reset successfully!');
+    });
+
+    // Show Profile Form
+    function showProfileForm() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('user-profile').style.display = 'block';
+        document.getElementById('sign-up').style.display = 'none';
+        document.getElementById('username').value = user.username;
+        document.getElementById('email').value = user.email;
+      }
+    }
+
+    // Show Multi-Step Setup Form
+    document.getElementById('next-step')?.addEventListener('click', () => {
+      document.getElementById('step-1').style.display = 'none';
+      document.getElementById('step-2').style.display = 'block';
+    });
+
+    document.getElementById('back-step')?.addEventListener('click', () => {
+      document.getElementById('step-2').style.display = 'none';
+      document.getElementById('step-1').style.display = 'block';
+    });
+
+    document.getElementById('finish-setup')?.addEventListener('click', () => {
+      const interest = document.getElementById('interest-select').value;
+      alert(`Setup complete! Your interest is set to ${interest}.`);
+      document.getElementById('multi-step-form').style.display = 'none';
+    });
+
+    // On Page Load: Check if user is logged in
+    window.addEventListener('load', () => {
+      const user = localStorage.getItem('user');
+      if (user) {
+        showProfileForm();
+      }
+    });
+  </script>
 </body>
 </html>
