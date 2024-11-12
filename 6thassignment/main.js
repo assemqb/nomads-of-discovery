@@ -312,3 +312,189 @@ if (document.getElementById('search-button')) {
     // Initial Render of All Opportunities
     renderOpportunities(opportunities);
 }
+
+// Theme Toggle Functionality
+const themeToggleBtn = document.getElementById("theme-toggle");
+themeToggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("night-theme");
+    const theme = document.body.classList.contains("night-theme") ? 'dark' : 'light';
+    localStorage.setItem('theme', theme); // Save theme preference
+
+    // Update button text based on theme
+    themeToggleBtn.textContent = theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Night Mode';
+});
+
+// Apply saved theme on page load
+document.body.classList.toggle("night-theme", localStorage.getItem('theme') === 'dark');
+
+// ChatGPT API Integration
+async function interactWithChatGPT(prompt) {
+    try {
+        const response = await fetch('https://api.openai.com/v1/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer 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`, // Replace with your API key
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: "text-davinci-003",
+                prompt: prompt,
+                max_tokens: 150
+            })
+        });
+        const data = await response.json();
+        document.getElementById('chatgpt-response').textContent = data.choices[0].text;
+    } catch (error) {
+        console.error('Error interacting with ChatGPT:', error);
+        document.getElementById('chatgpt-response').textContent = 'Error fetching response. Please try again.';
+    }
+}
+
+document.getElementById('chatgpt-submit')?.addEventListener('click', () => {
+    const promptInput = document.getElementById('chatgpt-prompt').value.trim();
+    if (promptInput) {
+        interactWithChatGPT(promptInput);
+    } else {
+        alert('Please enter a prompt.');
+    }
+});
+
+// Responsive Navigation Handling
+function adjustNavigationForMobile() {
+    const navItems = document.querySelectorAll('nav ul li');
+    if (window.innerWidth <= 768) {
+        navItems.forEach(item => {
+            item.style.display = 'block';
+            item.style.marginBottom = '10px';
+        });
+    } else {
+        navItems.forEach(item => {
+            item.style.display = 'inline-block';
+            item.style.marginBottom = '0';
+        });
+    }
+}
+window.addEventListener('resize', adjustNavigationForMobile);
+adjustNavigationForMobile(); // Initial call
+
+// Multi-Step Form Handling
+let currentStep = 1;
+document.getElementById('next-step')?.addEventListener('click', () => {
+    document.getElementById('step-1').style.display = 'none';
+    document.getElementById('step-2').style.display = 'block';
+    currentStep = 2;
+});
+
+document.getElementById('back-step')?.addEventListener('click', () => {
+    document.getElementById('step-2').style.display = 'none';
+    document.getElementById('step-1').style.display = 'block';
+    currentStep = 1;
+});
+
+document.getElementById('finish-setup')?.addEventListener('click', () => {
+    const interest = document.getElementById('interest-select').value;
+    alert(`Setup complete! Your interest is set to ${interest}.`);
+    document.getElementById('multi-step-form').style.display = 'none';
+});
+
+// Account Form Handling
+document.getElementById('account-form')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    if (username && email) {
+        alert('Profile updated successfully!');
+        const user = JSON.parse(localStorage.getItem('user'));
+        user.username = username;
+        user.email = email;
+        localStorage.setItem('user', JSON.stringify(user));
+    } else {
+        alert('Please fill in all fields.');
+    }
+});
+
+document.getElementById('reset-button')?.addEventListener('click', () => {
+    document.getElementById('account-form').reset();
+    alert('Form reset successfully!');
+});
+
+// Dynamic Greeting Input (Optional Feature)
+const greetingInput = document.getElementById("greeting-input");
+document.getElementById("set-greeting")?.addEventListener("click", () => {
+    const name = greetingInput?.value.trim() || 'Guest';
+    alert(`Hello, ${name}!`);
+    greetingInput.value = ""; // Clear input
+});
+
+// Star Rating Interaction
+document.querySelectorAll('.star-rating').forEach(ratingContainer => {
+    const stars = ratingContainer.querySelectorAll('.star');
+    stars.forEach((star) => {
+        star.addEventListener('click', () => {
+            const ratingValue = star.getAttribute('data-value');
+            stars.forEach((s) => {
+                s.style.color = s.getAttribute('data-value') <= ratingValue ? 'gold' : 'gray';
+            });
+            alert(`You rated this ${ratingValue} stars!`);
+        });
+    });
+});
+
+// Random Quote Functionality
+const quotes = ["Inspiring quote 1", "Inspiring quote 2", "Inspiring quote 3"];
+document.getElementById("new-quote-btn")?.addEventListener("click", () => {
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById("quote-display").textContent = randomQuote;
+});
+
+// Search Functionality
+const opportunities = [
+    { id: 1, title: 'Volunteer Program in Africa', category: 'volunteer', description: 'Impact communities through meaningful volunteer work.' },
+    { id: 2, title: 'Scholarship in Europe', category: 'scholarship', description: 'Enhance your education with a full scholarship in Europe.' },
+    { id: 3, title: 'Travel Grants for Asia', category: 'grant', description: 'Explore Asia through cultural exchange travel grants.' }
+];
+
+document.getElementById('search-button')?.addEventListener('click', () => {
+    const query = document.getElementById('search').value.toLowerCase();
+    const category = document.getElementById('category').value;
+    const resultsList = document.getElementById('results-list');
+
+    let filteredOpportunities = opportunities.filter(opportunity => {
+        return (!category || opportunity.category === category) &&
+               (!query || opportunity.title.toLowerCase().includes(query));
+    });
+
+    // Save filtered opportunities in localStorage
+    localStorage.setItem('searchResults', JSON.stringify(filteredOpportunities));
+
+    resultsList.innerHTML = filteredOpportunities.map(opportunity => `
+        <li class="opportunity-item" data-id="${opportunity.id}">
+            ${opportunity.title}
+        </li>
+    `).join('');
+
+    document.querySelectorAll('.opportunity-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const id = Number(item.getAttribute('data-id'));
+            const opportunity = opportunities.find(op => op.id === id);
+            if (opportunity) {
+                alert(`Title: ${opportunity.title}\nDescription: ${opportunity.description}`);
+            }
+        });
+    });
+});
+
+// On Page Load: Display previous search results from localStorage
+window.addEventListener('load', () => {
+    const storedResults = JSON.parse(localStorage.getItem('searchResults'));
+    if (storedResults) {
+        const resultsList = document.getElementById('results-list');
+        resultsList.innerHTML = storedResults.map(opportunity => `
+            <li class="opportunity-item" data-id="${opportunity.id}">
+                ${opportunity.title}
+            </li>
+        `).join('');
+    }
+});
+
